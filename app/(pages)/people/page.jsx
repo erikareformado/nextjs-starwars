@@ -11,30 +11,24 @@ import filterByName from "@/app/helpers/filterByName.js";
 
 import { useApplication } from "../../context/ApplicationContext.jsx"
 import { useEffect, useState } from "react"
-import { useRouter } from 'next/navigation';
-
 
 const People = () => {
-    const [peopleData, setPeopleData] = useState(null)
+    const [peopleData, setPeopleData] = useState([])
     const [currentUrl, setCurrentUrl] = useState(`${process.env.NEXT_PUBLIC_API_URL}/people`)
     const [paginationUrl, setPaginationUrl] = useState({})
     const [isLoading, setIsLoading] = useState(false)
 
-    const { push } = useRouter();
     const {txtSearch, setActiveApi, activeApi, characters, setCharacters }= useApplication()
     
     useEffect(()=> {
       const getAllCharacters = async() => {
-        setIsLoading(true)
         try { 
             const allCharacters = await fetch(
             `${process.env.NEXT_PUBLIC_AKABAB_API_URL}/all.json`
             ).then((res) => res.json());
             setCharacters(allCharacters)
-            setIsLoading(false)
         } catch (error) {
             console.error('Error fetching data:', error);
-            setIsLoading(false)
         }
       };
   
@@ -83,42 +77,57 @@ const People = () => {
 
     return (
         <ProtectedRoute>
-            {
-                isLoading=== true ?   <Loader/>
-                : <main className="p-8 relative flex justify-center">
-                <PreviousButton 
-                isDisabled={paginationUrl.previous === null}
-                onPrevious={onPreviousUrl}
-                />
-    
-                <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5 content-center w-fit">
-                    {
-                        peopleData ?
-                        peopleData.map((people, index) => {
-                            return (
-                                filterByName(people.name, characters).map((character, index )=> {
-                                    return (
-                                        <CardButton key={index}
-                                        name={people.name}
-                                        image={character.image}
-                                        />
-                                        
-                                        )
-                                    })
-                            )
+            <main className="p-8 relative flex justify-center">
+                {
+                    isLoading=== true ?   <Loader/>
+                    : 
+                    <div>
+                        {
+                            peopleData.length > 0 ?
+                                <div>
+                                    <PreviousButton 
+                                    isDisabled={paginationUrl.previous === null}
+                                    onPrevious={onPreviousUrl}
+                                    />
+                                    <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5 content-center w-fit">
+                                        {
+                                            
+                                            peopleData.map((people, index) => {
+                                                return (
+                                                    filterByName(people.name, characters).map((character, index )=> {
+                                                        return (
+                                                            <CardButton key={index}
+                                                            name={people.name}
+                                                            image={character.image}
+                                                            />
+                                                            
+                                                            )
+                                                        })
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                    <NextButton
+                                    isDisabled={paginationUrl.next === null}
+                                    onNextUrl={onNextUrl}
+                                    />    
+                                </div>
+                            : 
+                            <div className="flex item-center justify-center h-full">
+                                <p className="text-white text-center">
+                                    No available data
+                                </p>
+                            </div> 
+                        }
+            
                         
-                        })
-                        
-                        : 'No available data'
-                    }
-                </div>
-                <NextButton
-                isDisabled={paginationUrl.next === null}
-                onNextUrl={onNextUrl}
-                />
+
+                    </div>
+                }
+
               
             </main>
-            }
+            
             
         </ProtectedRoute>
     
