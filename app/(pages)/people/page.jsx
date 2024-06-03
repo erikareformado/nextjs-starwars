@@ -23,10 +23,14 @@ const People = () => {
     
     useEffect(()=> {
       const getAllCharacters = async() => {
-        const allCharacters = await fetch(
-          `${process.env.NEXT_PUBLIC_AKABAB_API_URL}/all.json`
-        ).then((res) => res.json());
-        setCharacters(allCharacters)
+        try { 
+            const allCharacters = await fetch(
+            `${process.env.NEXT_PUBLIC_AKABAB_API_URL}/all.json`
+            ).then((res) => res.json());
+            setCharacters(allCharacters)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
       };
   
       getAllCharacters();
