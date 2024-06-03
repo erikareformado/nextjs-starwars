@@ -1,4 +1,6 @@
-    export async function getStaticPaths() {
+
+  import ShowBlog from "@/app/components/Blog/Show"
+  export async function getStaticPaths() {
 
     // Call an external API endpoint to get posts
     const posts =  await fetch('https://jsonplaceholder.typicode.com/posts').then((res) => res.json())
@@ -22,10 +24,9 @@
     }))
   }
 
-  const BlogShow = () => {
+  const BlogShow = ({params}) => {
     return (
-        <>
-        </>
+      <ShowBlog id={params.id}/>
     )
   }
 
