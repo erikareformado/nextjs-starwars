@@ -39,7 +39,15 @@ const Navbar = () => {
                         menu !== null ?
                         menu.map((value, index)=> {
                             return (
-                            
+                                value.name === 'home' ?
+                                <a className={` rounded-md py-1 mr-6  px-4 uppercase font-bold cursor-pointer
+                                ${pathname === '/' ? 'bg-yellow-300 text-black  border-yellow-300' : 'text-yellow-300 bg-black border-[0.1px] border-white'}`}
+                                key={index}
+                                onClick={() => push(`${value.route}`)}
+                                >
+                                    {value.display_name}
+                                </a >
+                                :
                                 <a className={` rounded-md py-1 mr-6  px-4 uppercase font-bold cursor-pointer
                                 ${pathname.includes(value.name) ? 'bg-yellow-300 text-black  border-yellow-300' : 'text-yellow-300 bg-black border-[0.1px] border-white'}`}
                                 key={index}
@@ -54,7 +62,10 @@ const Navbar = () => {
                 </div>
 
                 <div className="sm:ml-6 sm:block hidden">
-                    <SearchInput/>
+                   { pathname.includes('people') ? 
+                        <SearchInput/>
+                    : null
+                   } 
                 </div>
                 <div>
                     <button className="py-1 ml-6  px-4 uppercase font-bold cursor-pointer text-yellow-300 bg-black hover:border-b hover:border-white"
