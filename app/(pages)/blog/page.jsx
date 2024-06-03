@@ -4,11 +4,14 @@ import PreviousButton from "@/app/components/PreviousButton"
 import CardButton from "@/app/components/CardButton"
 import ProtectedRoute from "@/app/hooks/ProtectedRoute"
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 const Blog = () => {
     const [pageNumber, setPageNumber] = useState(1)
     const [lastPage,setLastPage] = useState(0)
     const [allData, setAllData] = useState([])
     const [blogsData, setBlogsData] = useState([])
+
+    const { push } = useRouter()
 
     useEffect(() => {
 
@@ -63,10 +66,13 @@ const Blog = () => {
                         blogsData.map((blog, index) => {
                             return (
                                 <div className="w-[300px]" key={index}>
-                                    <div className="shadow-lg hover:rounded-b-lg hover:drop-shadow-xl hover:shadow-yellow-300" role="button">
+                                    <div 
+                                    onClick={() => push(`/blog/${blog.id}`)}
+                                    className="shadow-lg hover:rounded-b-lg hover:drop-shadow-xl hover:shadow-yellow-300" 
+                                    role="button">
                                         <img className="rounded-t-lg"  src={blog.image}/>
                                         <div className="rounded-b-lg h-32 p-3 text-white">
-                                            <h3 className="text-xl font-semibold">
+                                            <h3 className="text-xl text-center font-semibold">
                                                 {blog.title}
                                             </h3>
                                         </div>
