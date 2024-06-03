@@ -5,6 +5,7 @@ import ProtectedRoute from "@/app/hooks/ProtectedRoute.jsx";
 import CardButton from "@/app/components/CardButton.jsx"
 import PreviousButton from "@/app/components/PreviousButton";
 import NextButton from "@/app/components/NextButton";
+import Loader from "@/app/components/Loader.jsx";
 
 import filterByName from "@/app/helpers/filterByName.js";
 
@@ -17,19 +18,23 @@ const People = () => {
     const [peopleData, setPeopleData] = useState(null)
     const [currentUrl, setCurrentUrl] = useState(`${process.env.NEXT_PUBLIC_API_URL}/people`)
     const [paginationUrl, setPaginationUrl] = useState({})
+    const [isLoading, setIsLoading] = useState(false)
 
     const { push } = useRouter();
     const {txtSearch, setActiveApi, activeApi, characters, setCharacters }= useApplication()
     
     useEffect(()=> {
       const getAllCharacters = async() => {
+        setIsLoading(true)
         try { 
             const allCharacters = await fetch(
             `${process.env.NEXT_PUBLIC_AKABAB_API_URL}/all.json`
             ).then((res) => res.json());
             setCharacters(allCharacters)
+            setIsLoading(false)
         } catch (error) {
             console.error('Error fetching data:', error);
+            setIsLoading(false)
         }
       };
   
@@ -39,6 +44,7 @@ const People = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true)
             setActiveApi('people')
             try {
                 let route = currentUrl
@@ -53,10 +59,12 @@ const People = () => {
                     next: data.next
                 }
                 setPaginationUrl(pagination)
+                setIsLoading(false)
                console.log(data)
               
             } catch (error) {
                 console.error('Error fetching data:', error);
+                setIsLoading(false)
             }
         };
 
@@ -75,7 +83,9 @@ const People = () => {
 
     return (
         <ProtectedRoute>
-            <main className="p-8 relative flex justify-center">
+            {
+                isLoading=== true ?   <Loader/>
+                : <main className="p-8 relative flex justify-center">
                 <PreviousButton 
                 isDisabled={paginationUrl.previous === null}
                 onPrevious={onPreviousUrl}
@@ -106,7 +116,10 @@ const People = () => {
                 isDisabled={paginationUrl.next === null}
                 onNextUrl={onNextUrl}
                 />
+              
             </main>
+            }
+            
         </ProtectedRoute>
     
    
