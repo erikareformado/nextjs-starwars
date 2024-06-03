@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react"
 import authApi from "@/app/services/authApi"
-import notify from "@/app/components/Toastify/toaster"
+import notify from "@/app/components/Toastify/toaster.js"
 
 import Header from "@/app/components/Header"
 import Input from "@/app/components/Input"
