@@ -17,7 +17,7 @@ const Blog = () => {
 
         const fetchBlogs = async() => {
             const blogs = await fetch(
-                `https://jsonplaceholder.org/posts`
+                `${process.env.NEXT_PUBLIC_BLOG_API_URL}/posts`
             ).then((res) => res.json()
             .catch((error) => console.log(error) ));
            

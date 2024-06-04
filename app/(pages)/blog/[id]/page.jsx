@@ -3,7 +3,7 @@
   export async function getStaticPaths() {
 
     // Call an external API endpoint to get posts
-    const posts =  await fetch('https://jsonplaceholder.typicode.com/posts').then((res) => res.json())
+    const posts =  await fetch(`${process.env.NEXT_PUBLIC_BLOG_ID_API_URL}/posts`).then((res) => res.json())
     // const posts = await res.json()
    
     // Get the paths we want to prerender based on posts
@@ -18,7 +18,7 @@
   }
 
   export async function generateStaticParams() {
-    const posts = await fetch('https://jsonplaceholder.typicode.com/posts').then((res) => res.json())
+    const posts = await fetch(`${process.env.NEXT_PUBLIC_BLOG_ID_API_URL}/posts`).then((res) => res.json())
     return posts.map((post) => ({
       slug: post.id,
     }))
