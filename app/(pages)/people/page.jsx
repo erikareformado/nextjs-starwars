@@ -54,8 +54,6 @@ const People = () => {
                 }
                 setPaginationUrl(pagination)
                 setIsLoading(false)
-               console.log(data)
-              
             } catch (error) {
                 console.error('Error fetching data:', error);
                 setIsLoading(false)
