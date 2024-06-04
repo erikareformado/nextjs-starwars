@@ -18,8 +18,7 @@ const ShowBlog = ({id}) => {
     return (
         <ProtectedRoute>
             <main className="text-white p-8">
-                <h1 className="text-center text-2xl font-semibold">{blog.title}</h1>
-                <h3 className="text-center text-yellow-300 text-xl text-medium capitalize">{blog.category}</h3>
+                <h1 className="text-center text-2xl text-yellow-300 font-semibold">{blog.title}</h1>
                 <div className="flex justify-center w-full">
                     <div className="max-w-xl mt-10">
                         <p className="text-left">{blog.content}</p>
